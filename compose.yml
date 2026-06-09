@@ -15,6 +15,19 @@ services:
     expose:
       - "80"
 
+  # ── DNS Lookup (nslookup / dig Web-UI) ────────────────────────
+  dns-lookup:
+    image: tools-dns-lookup:local
+    container_name: tools-dns-lookup
+    restart: unless-stopped
+    read_only: true
+    pids_limit: 64
+    mem_limit: 128m
+    networks:
+      - tools_net
+    expose:
+      - "8080"
+
   # ── IT-Tools ───────────────────────────────────────────────────
   it-tools:
     image: corentinth/it-tools:latest
@@ -46,25 +59,6 @@ services:
     expose:
       - "8080"
 
-  # ── LibreSpeed ─────────────────────────────────────────────────
-  librespeed:
-    image: linuxserver/librespeed:latest
-    container_name: tools-librespeed
-    restart: unless-stopped
-    pids_limit: 128
-    mem_limit: 256m
-    environment:
-      PUID: "1000"
-      PGID: "1000"
-      TZ: Europe/Berlin
-      PASSWORD: ""
-      CUSTOM_RESULTS: false
-      DB_TYPE: none
-    networks:
-      - tools_net
-    expose:
-      - "80"
-
   # ── PrivateBin ─────────────────────────────────────────────────
   privatebin:
     image: privatebin/nginx-fpm-alpine:latest
@@ -78,24 +72,7 @@ services:
     networks:
       - tools_net
     expose:
-      - "80"
-
-  # ── Pingvin Share ──────────────────────────────────────────────
-  pingvin:
-    image: stonith404/pingvin-share:latest
-    container_name: tools-pingvin
-    restart: unless-stopped
-    pids_limit: 256
-    mem_limit: 512m
-    environment:
-      NEXTAUTH_URL: https://share.m00h.eu
-      BACKEND_PORT: "8080"
-    volumes:
-      - pingvin_data:/opt/app/backend/data
-    networks:
-      - tools_net
-    expose:
-      - "3000"
+      - "8080"
 
   # ── Shlink DB ──────────────────────────────────────────────────
   shlink-db:
@@ -176,6 +153,5 @@ networks:
 
 volumes:
   privatebin_data:
-  pingvin_data:
   shlink_data:
   shlink_db_data:

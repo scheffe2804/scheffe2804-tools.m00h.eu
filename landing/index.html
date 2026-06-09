@@ -200,7 +200,8 @@
     <p>
       Betrieben von <a href="https://m00h.eu">m00h.eu</a>
       &middot; Alle Tools laufen auf eigener Infrastruktur
-      &middot; Nutzungsstatistiken via Matomo
+      &middot; <a href="/impressum/">Impressum</a>
+      &middot; <a href="/datenschutz/">Datenschutz</a>
       &middot; <button class="consent-link" onclick="showConsentBanner()">Cookie-Einstellungen</button>
     </p>
   </footer>
@@ -211,8 +212,7 @@
       Diese Seite nutzt <strong>Matomo</strong> für anonyme Nutzungsstatistiken und
       <strong>Google AdSense</strong> für Werbung. Mit „Zustimmen" erlaubst du das Setzen von
       Cookies. Bei „Ablehnen" werden keine Tracking-Cookies gesetzt; Werbung erscheint dann
-      ohne Personalisierung. Du kannst die Einwilligung jederzeit über „Cookie-Einstellungen"
-      im Footer ändern.
+      ohne Personalisierung. Mehr dazu in der <a href="/datenschutz/" style="color:#7dd3fc">Datenschutzerklärung</a>.
     </p>
     <div class="consent-btns">
       <button class="btn-reject" onclick="handleConsent(false)">Ablehnen</button>
@@ -222,6 +222,19 @@
 
   <script>
     var CONSENT_KEY = 'cookie_consent_v1';
+    var CONSENT_DOMAIN = '.m00h.eu';
+
+    function getCookie(name) {
+      var m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    function setCookie(name, value, days) {
+      var exp = new Date(Date.now() + days * 864e5).toUTCString();
+      document.cookie = name + '=' + encodeURIComponent(value) +
+        '; expires=' + exp + '; domain=' + CONSENT_DOMAIN +
+        '; path=/; SameSite=Lax; Secure';
+    }
 
     function loadMatomo() {
       var _paq = window._paq = window._paq || [];
@@ -267,7 +280,7 @@
     }
 
     function handleConsent(accepted) {
-      localStorage.setItem(CONSENT_KEY, accepted ? 'yes' : 'no');
+      setCookie(CONSENT_KEY, accepted ? 'yes' : 'no', 365);
       document.getElementById('consent-banner').style.display = 'none';
       applyConsent(accepted);
     }
@@ -276,7 +289,7 @@
       document.getElementById('consent-banner').style.display = 'flex';
     }
 
-    var saved = localStorage.getItem(CONSENT_KEY);
+    var saved = getCookie(CONSENT_KEY);
     if (saved === null) {
       document.getElementById('consent-banner').style.display = 'flex';
     } else {

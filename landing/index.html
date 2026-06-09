@@ -53,20 +53,9 @@
       border-color: #7dd3fc;
       transform: translateY(-2px);
     }
-    .card-icon {
-      font-size: 2rem;
-      line-height: 1;
-    }
-    .card h2 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-    .card p {
-      font-size: 0.875rem;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
+    .card-icon { font-size: 2rem; line-height: 1; }
+    .card h2 { font-size: 1.1rem; font-weight: 600; color: #e2e8f0; }
+    .card p { font-size: 0.875rem; color: #94a3b8; line-height: 1.5; }
     .card .tag {
       display: inline-block;
       background: #0f3460;
@@ -77,17 +66,7 @@
       margin-top: auto;
       align-self: flex-start;
     }
-    .ad-slot {
-      grid-column: 1 / -1;
-      background: #1a1f2e;
-      border: 1px dashed #2d3748;
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
-      color: #475569;
-      font-size: 0.8rem;
-      min-height: 90px;
-    }
+    .ad-slot { grid-column: 1 / -1; min-height: 90px; }
     footer {
       text-align: center;
       padding: 2rem 1.5rem;
@@ -96,28 +75,88 @@
       border-top: 1px solid #1e2533;
       margin-top: 2rem;
     }
-    footer a { color: #7dd3fc; text-decoration: none; }
+    footer a, .consent-link {
+      color: #7dd3fc;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: inherit;
+      font-family: inherit;
+      padding: 0;
+    }
+    /* ── Consent Banner ── */
+    #consent-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #1a1f2e;
+      border-top: 1px solid #334155;
+      padding: 1.25rem 1.5rem;
+      display: none;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      z-index: 9999;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.5);
+    }
+    #consent-banner p {
+      flex: 1;
+      min-width: 220px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    #consent-banner strong { color: #e2e8f0; }
+    .consent-btns { display: flex; gap: 0.75rem; flex-shrink: 0; }
+    .btn-accept {
+      padding: 0.5rem 1.4rem;
+      background: #0369a1;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-accept:hover { background: #0284c7; }
+    .btn-reject {
+      padding: 0.5rem 1.2rem;
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .btn-reject:hover { border-color: #94a3b8; color: #e2e8f0; }
   </style>
-  <!-- AdSense -->
+
+  <!-- Google Consent Mode v2 – vor adsbygoogle.js -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'ad_storage':         'denied',
+      'ad_user_data':       'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage':  'denied',
+      'wait_for_update':    3000
+    });
+  </script>
+
+  <!-- AdSense – Skript immer laden; Cookies erst nach Consent-Update -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6440027702756215" crossorigin="anonymous"></script>
 </head>
 <body>
+
   <header>
     <h1>tools.m00h.eu</h1>
     <p>Kostenlose Online-Tools – selbst gehostet, direkt nutzbar, kein Account erforderlich.</p>
   </header>
 
   <main>
-    <div class="ad-slot">
-      <!-- AdSense Banner -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6440027702756215"
-           data-ad-slot="auto"
-           data-ad-format="horizontal"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    <!-- Ad-Slots werden erst nach Consent-Entscheidung per JS befüllt -->
+    <div class="ad-slot" id="ad-top"></div>
 
     <a class="card" href="https://it.m00h.eu">
       <div class="card-icon">🔧</div>
@@ -154,34 +193,96 @@
       <span class="tag">Kurz-URLs</span>
     </a>
 
-    <div class="ad-slot">
-      <!-- AdSense Banner unten -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6440027702756215"
-           data-ad-slot="auto"
-           data-ad-format="horizontal"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    <div class="ad-slot" id="ad-bottom"></div>
   </main>
 
   <footer>
-    <p>Betrieben von <a href="https://m00h.eu">m00h.eu</a> &middot; Alle Tools laufen auf eigener Infrastruktur &middot; Nutzungsstatistiken via Matomo</p>
+    <p>
+      Betrieben von <a href="https://m00h.eu">m00h.eu</a>
+      &middot; Alle Tools laufen auf eigener Infrastruktur
+      &middot; Nutzungsstatistiken via Matomo
+      &middot; <button class="consent-link" onclick="showConsentBanner()">Cookie-Einstellungen</button>
+    </p>
   </footer>
 
-  <!-- Matomo -->
+  <!-- Cookie-Consent-Banner -->
+  <div id="consent-banner">
+    <p>
+      Diese Seite nutzt <strong>Matomo</strong> für anonyme Nutzungsstatistiken und
+      <strong>Google AdSense</strong> für Werbung. Mit „Zustimmen" erlaubst du das Setzen von
+      Cookies. Bei „Ablehnen" werden keine Tracking-Cookies gesetzt; Werbung erscheint dann
+      ohne Personalisierung. Du kannst die Einwilligung jederzeit über „Cookie-Einstellungen"
+      im Footer ändern.
+    </p>
+    <div class="consent-btns">
+      <button class="btn-reject" onclick="handleConsent(false)">Ablehnen</button>
+      <button class="btn-accept" onclick="handleConsent(true)">Zustimmen</button>
+    </div>
+  </div>
+
   <script>
-    var _paq = window._paq = window._paq || [];
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u = "MATOMO_URL_PLACEHOLDER/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
-      _paq.push(['setSiteId', 'MATOMO_SITE_ID_PLACEHOLDER']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
+    var CONSENT_KEY = 'cookie_consent_v1';
+
+    function loadMatomo() {
+      var _paq = window._paq = window._paq || [];
+      _paq.push(['rememberConsentGiven']);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u = 'https://stats.sauerlandaktuell.de/';
+        _paq.push(['setTrackerUrl', u + 'matomo.php']);
+        _paq.push(['setSiteId', '5']);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+      })();
+    }
+
+    function renderAds() {
+      ['ad-top', 'ad-bottom'].forEach(function(id) {
+        var slot = document.getElementById(id);
+        if (!slot || slot.hasChildNodes()) return;
+        var ins = document.createElement('ins');
+        ins.className = 'adsbygoogle';
+        ins.style.display = 'block';
+        ins.setAttribute('data-ad-client', 'ca-pub-6440027702756215');
+        ins.setAttribute('data-ad-slot', 'auto');
+        ins.setAttribute('data-ad-format', 'horizontal');
+        ins.setAttribute('data-full-width-responsive', 'true');
+        slot.appendChild(ins);
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      });
+    }
+
+    function applyConsent(accepted) {
+      if (accepted) {
+        gtag('consent', 'update', {
+          'ad_storage':         'granted',
+          'ad_user_data':       'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage':  'granted'
+        });
+        loadMatomo();
+      }
+      renderAds();
+    }
+
+    function handleConsent(accepted) {
+      localStorage.setItem(CONSENT_KEY, accepted ? 'yes' : 'no');
+      document.getElementById('consent-banner').style.display = 'none';
+      applyConsent(accepted);
+    }
+
+    function showConsentBanner() {
+      document.getElementById('consent-banner').style.display = 'flex';
+    }
+
+    var saved = localStorage.getItem(CONSENT_KEY);
+    if (saved === null) {
+      document.getElementById('consent-banner').style.display = 'flex';
+    } else {
+      applyConsent(saved === 'yes');
+    }
   </script>
+
 </body>
 </html>

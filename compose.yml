@@ -36,6 +36,7 @@ services:
     mem_limit: 2g
     environment:
       DOCKER_ENABLE_SECURITY: false
+      SECURITY_ENABLELOGIN: "false"
       INSTALL_BOOK_AND_ADVANCED_HTML_OPS: false
     volumes:
       - ./data/stirling/configs:/configs
@@ -87,9 +88,8 @@ services:
     pids_limit: 256
     mem_limit: 512m
     environment:
-      PORT: "3000"
-      NEXTAUTH_URL: https://share.tools.m00h.eu
-      NEXTAUTH_SECRET_FILE: ""
+      NEXTAUTH_URL: https://share.m00h.eu
+      BACKEND_PORT: "8080"
     volumes:
       - pingvin_data:/opt/app/backend/data
     networks:
@@ -128,7 +128,7 @@ services:
     pids_limit: 256
     mem_limit: 512m
     environment:
-      DEFAULT_DOMAIN: go.tools.m00h.eu
+      DEFAULT_DOMAIN: go.m00h.eu
       IS_HTTPS_ENABLED: "true"
       DB_DRIVER: mysql
       DB_HOST: shlink-db

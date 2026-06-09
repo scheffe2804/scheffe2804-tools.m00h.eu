@@ -4,16 +4,16 @@ credentials-file: /run/tools-secrets/cloudflared/4b1d5bd8-d190-4799-85be-6ab24db
 ingress:
   - hostname: tools.m00h.eu
     service: http://nginx:80
-  - hostname: it.tools.m00h.eu
+  - hostname: it.m00h.eu
     service: http://it-tools:80
-  - hostname: pdf.tools.m00h.eu
+  - hostname: pdf.m00h.eu
     service: http://stirling:8080
-  - hostname: speed.tools.m00h.eu
+  - hostname: speed.m00h.eu
     service: http://librespeed:80
-  - hostname: paste.tools.m00h.eu
-    service: http://privatebin:80
-  - hostname: share.tools.m00h.eu
+  - hostname: bin.m00h.eu
+    service: http://privatebin:8080
+  - hostname: share.m00h.eu
     service: http://pingvin:3000
-  - hostname: go.tools.m00h.eu
+  - hostname: go.m00h.eu
     service: http://shlink:8080
   - service: http_status:404

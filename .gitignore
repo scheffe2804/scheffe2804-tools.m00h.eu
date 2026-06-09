@@ -1,0 +1,8 @@
+.env
+*.log
+/logs/
+/data/
+/backups/
+AGENTS.md
+agents.md
+CLAUDE.md
